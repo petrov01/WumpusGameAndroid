@@ -6,6 +6,7 @@ package game.petroff.wumpusgame.enums;
 
 public enum EElements {
 
+   FREE_CELL(0),
    WATER_WELL_NUMBER(3),
    WALL_NUMBER(3),
    ARRAY_SIZE (5),
