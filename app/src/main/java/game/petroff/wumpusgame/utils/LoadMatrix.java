@@ -20,20 +20,13 @@ public class LoadMatrix {
     //The additional matrix is used to find a way to the gold
     private int[][] addMatrix;
 
-    private int X;
-    private int Y;
+    private int startX;
+    private int startY;
 
-    LoadMatrix startPoint;
-    LoadMatrix endPoint;
-
-    public LoadMatrix(int x , int y) {
-        this.X = x;
-        this.Y = y;
-    }
+    private int finX;
+    private int finY;
 
     public LoadMatrix() {
-        this.matrix = new int[EElements.ARRAY_SIZE.getCode()][EElements.ARRAY_SIZE.getCode()];
-        this.addMatrix = new int[EElements.ARRAY_SIZE.getCode()+2][EElements.ARRAY_SIZE.getCode()+2];
         setMatrix();
     }
 
@@ -46,9 +39,16 @@ public class LoadMatrix {
     }
 
     private void setMatrix(){
+
+        this.matrix = new int[EElements.ARRAY_SIZE.getCode()][EElements.ARRAY_SIZE.getCode()];
+        this.addMatrix = new int[EElements.ARRAY_SIZE.getCode()+2][EElements.ARRAY_SIZE.getCode()+2];
+
         //These variables are used to set starting and ending point, to find a way to the gold
-        startPoint = new LoadMatrix(5, 1);
-        endPoint = new LoadMatrix(1, 5);
+        this.startX = 5;
+        this.startY = 1;
+
+        this.finX = 1;
+        this.finY = 5;
 
         matrix[4][0] = EElements.PLAYER.getCode();
         matrix[0][4] = EElements.GOLD.getCode();
@@ -70,7 +70,7 @@ public class LoadMatrix {
         //Setting walls in the additional array to avoid arrayindexoutofboundsexception
         if(setWallsInAddArray()){
             //If no way to the gold, reset the matrix
-            if (!checkWayToGold(startPoint.Y, startPoint.X))
+            if (!checkWayToGold(startY, startX))
             {
                 setMatrix();
             }
@@ -138,12 +138,14 @@ public class LoadMatrix {
     }
 
 
+    //It's a very heavy recursive function
+    //Controll of memory is needed
     public boolean checkWayToGold(int y, int x){
          // Make the move
         addMatrix[x][y] = EElements.HAS_PASSED.getCode();
 
         // Check if we have reached the gold
-        if (x == endPoint.X && y == endPoint.Y)
+        if (x == finX && y == finY)
         {
             return true;
         }
